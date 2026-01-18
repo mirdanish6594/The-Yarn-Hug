@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "name": "Mikasa muffler",
+      "category": "clothing",
+      "price": "₹1500.00",
+      "tag": "Best Seller",
+      "description": "The iconic Mikasa Ackerman scarf, handmade with 100% acrylic yarn. This warm and stylish muffler is perfect for any fan, providing comfort and a touch of Survey Corps spirit. Each scarf is meticulously crafted to ensure high quality and durability.",
+      "images": [
+        "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.31.jpeg",
+        "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.32.jpeg",
+        "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.44.jpeg"
+      ],
+      "material": "100% Acrylic",
+      "size": "Approx. 60 inches long x 10 inches wide",
+      "care": "Hand wash cold, lay flat to dry."
+    },
+    {
+      "id": "2",
+      "name": "Medium flower bouquet",
+      "category": "decor",
+      "price": "₹1050.00",
+      "tag": "New",
+      "description": "A beautiful handmade bouquet featuring 4 premium yarn flowers. Perfect for home decor or as a unique gift that never wilts.",
+      "images": [
+        "photos/bouquet/WhatsApp Image 2025-12-11 at 17.37.46.jpeg",
+        "photos/bouquet/image.png",
+        "photos/bouquet/image copy.png"
+      ],
+      "material": "Acrylic",
+      "size": "Approx. 10 inches tall",
+      "care": "Spot clean gently."
+    },
+    {
+      "id": "3",
+      "name": "Muffler + hat combo",
+      "category": "clothing",
+      "price": "₹1800.00",
+      "tag": "Limited",
+      "description": "A super cozy muffler and matching hat combo, handcrafted for ultimate warmth and style. Designed specifically for kids.",
+      "images": [
+        "photos/muflerhat/WhatsApp Image 2025-12-11 at 17.37.47.jpeg",
+        "photos/muflerhat/image copy.png",
+        "photos/muflerhat/image.png"
+      ],
+      "material": "100% Acrylic",
+      "size": "Kids size",
+      "care": "Hand wash cold, lay flat to dry."
+    }
+  ]
+}

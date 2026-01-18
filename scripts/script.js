@@ -1,60 +1,55 @@
-// Extracted script from index.html
 // --- CONFIGURATION ---
 const INSTAGRAM_HANDLE = "theyarnhug";
 const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}`;
 
-// Expanded Product Data with descriptions and carousel images
-const products = [
-    {
-        id: 1,
-        name: "Mikasa muffler",
-        category: "clothing",
-        price: "₹1500.00",
-        tag: "Best Seller",
-        description: "The iconic Mikasa Ackerman scarf, handmade with 100% acrylic yarn. This warm and stylish muffler is perfect for any fan, providing comfort and a touch of Survey Corps spirit. Each scarf is meticulously crafted to ensure high quality and durability.",
-        images: [
-            "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.31.jpeg", 
-            "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.32.jpeg", 
-            "photos/mikasa-mulfer/WhatsApp Image 2025-12-09 at 17.24.44.jpeg"
-        ],
-        material: "100% Acrylic",
-        size: "Approx. 60 inches long x 10 inches wide",
-        care: "Hand wash cold, lay flat to dry."
-    },
-    {
-        id: 2,
-        name: "Medium flower bouquet",
-        category: "decor",
-        price: "₹1050.00",
-        tag: "New",
-        description: "A beautiful handmade bouquet featuring 4 premium yarn flowers. Perfect for home decor or as a unique gift that never wilts.",
-        images: [
-            "photos/bouquet/WhatsApp Image 2025-12-11 at 17.37.46.jpeg",
-            "photos/bouquet/image.png",
-            "photos/bouquet/image copy.png"
+// Declare products globally but empty (filled via fetch)
+let products = [];
 
-        ],
-        material: "Acrylic",
-        size: "Approx. 10 inches tall",
-        care: "Spot clean gently."
-    },
-    {
-        id: 3,
-        name: "Muffler + hat combo",
-        category: "clothing",
-        price: "₹1800.00",
-        tag: "Limited",
-        description: "A super cozy muffler and matching hat combo, handcrafted for ultimate warmth and style. Designed specifically for kids.",
-        images: [
-            "photos/muflerhat/WhatsApp Image 2025-12-11 at 17.37.47.jpeg",
-            "photos/muflerhat/image copy.png",
-            "photos/muflerhat/image.png"
-        ],
-        material: "100% Acrylic",
-        size: "Kids size",
-        care: "Hand wash cold, lay flat to dry."
+// --- DATA FETCHING ---
+
+// 1. Fetch Products from JSON
+async function loadProductData() {
+    try {
+        // Add timestamp to prevent caching old data
+        const response = await fetch('data/products.json?t=' + new Date().getTime());
+        const data = await response.json();
+        
+        // The CMS saves the list inside an "items" key
+        products = data.items || []; 
+        
+        // Render the grid with the new data
+        renderProducts();
+        
+    } catch (error) {
+        console.error("Failed to load products:", error);
+        document.getElementById('product-grid').innerHTML = '<div class="col-span-full text-center text-red-400">Unable to load products. Please try refreshing.</div>';
     }
-];
+}
+
+// 2. Fetch Profile/About Info from JSON
+async function loadProfileData() {
+    try {
+        const response = await fetch('data/about.json?t=' + new Date().getTime());
+        const data = await response.json();
+
+        // Update Text Fields if they exist in the JSON
+        if(data.name) document.getElementById('about-name').textContent = data.name;
+        if(data.bio_p1) document.getElementById('about-bio-1').textContent = data.bio_p1;
+        if(data.bio_p2) document.getElementById('about-bio-2').textContent = data.bio_p2;
+        if(data.location) document.getElementById('about-location').textContent = data.location;
+        if(data.founded) document.getElementById('about-founded').textContent = data.founded;
+
+        // Update Image
+        if (data.image) {
+            document.getElementById('about-img').src = data.image;
+        }
+
+    } catch (error) {
+        console.error("Failed to load profile:", error);
+        // Fail silently - the hardcoded HTML will remain as fallback
+    }
+}
+
 
 // --- NAVIGATION LOGIC ---
 
@@ -101,10 +96,15 @@ function showProductView(productId) {
     const mainImg = document.getElementById('pd-main-img');
     const thumbContainer = document.getElementById('pd-thumbnails');
     
-    mainImg.src = product.images[0];
+    // Safety check for images array
+    const imgs = product.images || [];
+    if (imgs.length > 0) {
+        mainImg.src = imgs[0];
+    }
+
     thumbContainer.innerHTML = ''; // Clear old thumbs
 
-    product.images.forEach((imgUrl, index) => {
+    imgs.forEach((imgUrl, index) => {
         const thumb = document.createElement('button');
         thumb.className = `min-w-[70px] h-[70px] md:min-w-[80px] md:h-20 rounded-xl overflow-hidden border-2 transition flex-shrink-0 ${index === 0 ? 'border-pink-400 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`;
         thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
@@ -176,11 +176,6 @@ function triggerConfetti() {
     }
 }
 
-// Use standard event listener instead of overriding onload
-window.addEventListener('load', function() {
-    setTimeout(triggerConfetti, 500);
-});
-
 // Split observers to separate static page content from dynamic product grid
 const observerOptions = { threshold: 0.1 };
 
@@ -215,6 +210,12 @@ function renderProducts(filter = 'all') {
     productObserver.disconnect();
     grid.innerHTML = ''; 
 
+    // Handle empty state if products haven't loaded yet
+    if (products.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center text-gray-400 italic py-10">No products found.</div>';
+        return;
+    }
+
     const filteredProducts = filter === 'all'
         ? products
         : products.filter(p => p.category === filter);
@@ -234,11 +235,13 @@ function renderProducts(filter = 'all') {
             ? `<span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-pink-500 text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse z-10">${product.tag}</span>`
             : '';
 
+        // Safety check for images
+        const displayImage = (product.images && product.images.length > 0) ? product.images[0] : 'photos/placeholder.jpg'; // You might want a default placeholder
+
         card.innerHTML = `
-            <div class="relative overflow-hidden">
+            <div class="relative overflow-hidden aspect-square">
                 ${tagHtml}
-                <img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-700">
-                <!-- View Details Overlay -->
+                <img src="${displayImage}" alt="${product.name}" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-700">
                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition flex items-center justify-center">
                     <span class="bg-white/90 text-gray-600 px-4 py-2 rounded-full font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition duration-300 shadow-lg text-sm md:text-base">
                         View Details
@@ -262,6 +265,13 @@ function renderProducts(filter = 'all') {
         grid.appendChild(card);
         productObserver.observe(card);
     });
+    
+    // Trigger reveals for newly added cards
+    setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach(el => {
+            if(!el.classList.contains('active')) staticObserver.observe(el);
+        });
+    }, 100);
 }
 
 function filterProducts(category) {
@@ -282,5 +292,9 @@ function filterProducts(category) {
 }
 
 // Initialize
-renderProducts();
-document.querySelectorAll('.reveal').forEach(el => staticObserver.observe(el));
+window.addEventListener('load', function() {
+    setTimeout(triggerConfetti, 500);
+    loadProductData(); // Load dynamic products
+    loadProfileData(); // Load dynamic profile info
+    document.querySelectorAll('.reveal').forEach(el => staticObserver.observe(el));
+});

@@ -1,0 +1,46 @@
+backend:
+  name: git-gateway
+  branch: main # This must match your GitHub branch name
+
+media_folder: "photos" # Where the CMS uploads new images
+public_folder: "photos" # How the HTML code references those images
+
+collections:
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "products"
+        label: "Product Inventory"
+        file: "data/products.json" # The file the CMS reads from and writes to
+        fields:
+          - label: "Products"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "ID", name: "id", widget: "uuid"}
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Category", name: "category", widget: "select", options: ["clothing", "decor", "accessories", "plushies"]}
+              - {label: "Price", name: "price", widget: "string", hint: "e.g. ₹1500.00"}
+              - {label: "Tag (Optional)", name: "tag", widget: "string", required: false}
+              - {label: "Description", name: "description", widget: "text"}
+              - {label: "Material", name: "material", widget: "string", default: "100% Acrylic"}
+              - {label: "Size", name: "size", widget: "string"}
+              - {label: "Care Instructions", name: "care", widget: "string", default: "Hand wash cold, lay flat to dry."}
+              
+              # CRITICAL: This is set to 'field' (singular) to create a simple list of image paths
+              - label: "Images"
+                name: "images"
+                widget: "list"
+                field: {label: "Image", name: "image", widget: "image"}
+              
+                   # ADD THIS NEW SECTION:
+              - name: "profile"
+                label: "Profile & About"
+                file: "data/about.json"
+                fields:
+                 - {label: "Profile Image", name: "image", widget: "image"}
+                 - {label: "Name", name: "name", widget: "string", default: "Hi, I'm Berzish!"}
+                 - {label: "Bio (Paragraph 1)", name: "bio_p1", widget: "text"}
+                 - {label: "Bio (Paragraph 2)", name: "bio_p2", widget: "text"}
+                 - {label: "Location", name: "location", widget: "string", default: "Based in Srinagar"}
+                 - {label: "Established Date", name: "founded", widget: "string", default: "Est. June 2024"}
