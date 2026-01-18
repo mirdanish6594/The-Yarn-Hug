@@ -49,16 +49,17 @@
       "category": "clothing"
     },
     {
+      "size": "Approx 5 inches long",
       "material": "100% Acrylic",
-      "care": "Hand wash cold, lay flat to dry.",
+      "price": "₹ 200",
       "name": "Rose Keychain",
-      "category": "accessories",
-      "price": "200",
-      "description": "A beautiful handmade rose keychain. A perfect accessory or a unique gift.",
-      "tag": "New",
+      "care": "Hand wash cold, lay flat to dry.",
       "images": [
         "photos/whatsapp-image-2026-01-13-at-21.29.20.jpeg"
-      ]
+      ],
+      "tag": "New",
+      "description": "A beautiful handmade rose keychain. A perfect accessory or a unique gift.",
+      "category": "accessories"
     }
   ]
 }
