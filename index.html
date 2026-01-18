@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Yarn Hug | Handmade Crochet</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            pink: '#F7D1D1',
+                            blue: '#D1E8F7',
+                            green: '#D1F7E2',
+                            yellow: '#F7F2D1',
+                            purple: '#E2D1F7',
+                            cream: '#FEFBF5',
+                            text: '#5D5656',
+                            dark: '#4A4A4A'
+                        }
+                    },
+                    fontFamily: {
+                        'hand': ['Pacifico', 'cursive'],
+                        'body': ['Nunito', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Project styles extracted to external file -->
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body class="font-body min-h-screen flex flex-col relative">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-pastel-cream/95 backdrop-blur-sm border-b-2 border-pastel-pink shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Hamburger Button (Mobile) -->
+                <button id="menu-btn" onclick="toggleMenu()" class="md:hidden text-gray-600 focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="javascript:void(0)" onclick="goHome()" class="flex items-center gap-2 group">
+                    <i class="fa-solid fa-heart text-pink-400 text-xl group-hover:animate-pulse"></i>
+                    <span class="font-hand text-xl md:text-2xl text-pink-500">The Yarn Hug</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex gap-6 font-semibold text-gray-600">
+                    <a href="javascript:void(0)" onclick="goHome()" class="hover:text-pink-500 transition">Home</a>
+                    <a href="javascript:void(0)" onclick="scrollToSection('catalog')" class="hover:text-pink-500 transition">Shop</a>
+                    <a href="javascript:void(0)" onclick="scrollToSection('about')" class="hover:text-pink-500 transition">About</a>
+                </div>
+
+                <!-- CTA Button -->
+                <a href="https://www.instagram.com/theyarnhug" target="_blank" onclick="triggerConfetti()" class="bg-pastel-pink hover:bg-pink-200 text-gray-600 border border-pink-200 px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-xs md:text-sm transition shadow-sm flex items-center gap-2 transform hover:scale-105 active:scale-95">
+                    <i class="fa-brands fa-instagram text-lg"></i>
+                    <span class="hidden sm:inline">Talk to me!</span>
+                    <span class="sm:hidden">Chat</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="md:hidden border-t border-gray-100 mt-2">
+                <div class="flex flex-col py-4 gap-4 font-semibold text-gray-600 text-center">
+                    <a href="javascript:void(0)" onclick="toggleMenu(); goHome()" class="hover:text-pink-500 py-2 active:bg-pink-50 rounded-lg">Home</a>
+                    <a href="javascript:void(0)" onclick="toggleMenu(); scrollToSection('catalog')" class="hover:text-pink-500 py-2 active:bg-pink-50 rounded-lg">Shop</a>
+                    <a href="javascript:void(0)" onclick="toggleMenu(); scrollToSection('about')" class="hover:text-pink-500 py-2 active:bg-pink-50 rounded-lg">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN VIEW (Home, Catalog, About) -->
+    <div id="home-view" class="transition-opacity duration-300">
+        
+        <!-- Hero Section -->
+        <header id="home" class="relative overflow-hidden py-12 md:py-24">
+            <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-pastel-purple opacity-30 blob-shape translate-x-1/3 -translate-y-1/4 animate-float"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 md:w-80 md:h-80 bg-pastel-yellow opacity-30 blob-shape -translate-x-1/3 translate-y-1/4 animate-float-delayed"></div>
+
+            <div class="max-w-6xl mx-auto px-4 relative z-10 text-center reveal active">
+                <div class="inline-block bg-white px-4 py-1 rounded-full shadow-sm mb-4 border border-pastel-blue animate-bounce">
+                    <span class="text-blue-400 text-xs md:text-sm font-bold tracking-wider uppercase">100% Handmade</span>
+                </div>
+                <h1 class="font-hand text-4xl md:text-7xl text-gray-700 mb-4 md:mb-6 leading-tight">
+                    Warmth in <br class="md:hidden"> <span class="text-pink-400">Every Stitch</span>
+                </h1>
+                <p class="text-base md:text-xl text-gray-500 max-w-2xl mx-auto mb-6 md:mb-8 px-2">
+                    Custom crochet plushies, wearables, and accessories made with love. 
+                    Find your perfect item from The Yarn Hug today.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="scrollToSection('catalog')" class="bg-pink-400 hover:bg-pink-500 text-white px-6 py-3 md:px-8 md:py-3 rounded-2xl font-bold shadow-lg shadow-pink-200 transition transform hover:scale-105 active:scale-95 hover:-translate-y-1">
+                        Start Browsing
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Catalog Section -->
+        <section id="catalog" class="py-8 md:py-12 bg-white rounded-t-[2.5rem] md:rounded-t-[3rem] shadow-inner min-h-[600px] relative z-20">
+            <div class="max-w-6xl mx-auto px-4">
+                
+                <div class="text-center mb-6 md:mb-10 reveal">
+                    <h2 class="font-hand text-3xl md:text-4xl text-gray-700 mb-2 md:mb-4">Our Collection</h2>
+                    <p class="text-gray-500 text-sm md:text-base">Tap on any item to see more details & photos!</p>
+                </div>
+
+                <!-- Categories -->
+                <div class="flex justify-start md:justify-center gap-2 md:gap-3 mb-8 md:mb-10 overflow-x-auto no-scrollbar py-2 px-1 reveal">
+                    <button onclick="filterProducts('all')" class="cat-btn active bg-gray-800 text-white px-4 py-2 md:px-6 rounded-full font-bold whitespace-nowrap text-sm md:text-base transition transform hover:scale-105">All</button>
+                    <button onclick="filterProducts('clothing')" class="cat-btn bg-pastel-green text-gray-700 hover:bg-green-200 px-4 py-2 md:px-6 rounded-full font-bold whitespace-nowrap text-sm md:text-base transition transform hover:scale-105">Clothing</button>
+                    <button onclick="filterProducts('decor')" class="cat-btn bg-pastel-blue text-gray-700 hover:bg-blue-200 px-4 py-2 md:px-6 rounded-full font-bold whitespace-nowrap text-sm md:text-base transition transform hover:scale-105">Decor</button>
+                    <button onclick="filterProducts('accessories')" class="cat-btn bg-pastel-purple text-gray-700 hover:bg-purple-200 px-4 py-2 md:px-6 rounded-full font-bold whitespace-nowrap text-sm md:text-base transition transform hover:scale-105">Accessories</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-10">
+                    <!-- Products injected via JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-12 md:py-16 bg-pastel-cream">
+            <div class="max-w-4xl mx-auto px-4 text-center reveal">
+                <i class="fa-solid fa-wand-magic-sparkles text-3xl md:text-4xl text-purple-400 mb-4 md:mb-6 animate-pulse"></i>
+                <h2 class="font-hand text-3xl md:text-4xl text-gray-700 mb-6">How It Works</h2>
+                <div class="grid md:grid-cols-3 gap-6 md:gap-8 text-left md:text-center">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-pastel-pink transform transition hover:-translate-y-2 duration-300">
+                        <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-500 font-bold text-xl mb-4 md:mx-auto">1</div>
+                        <h3 class="font-bold text-lg mb-2">Pick a Favorite</h3>
+                        <p class="text-sm text-gray-500">Browse our catalog and tap a product to see all the cute details.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-pastel-blue transform transition hover:-translate-y-2 duration-300 delay-100">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 font-bold text-xl mb-4 md:mx-auto">2</div>
+                        <h3 class="font-bold text-lg mb-2">DM on Instagram</h3>
+                        <p class="text-sm text-gray-500">Hit the "Order" button to jump straight to our DMs.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-pastel-green transform transition hover:-translate-y-2 duration-300 delay-200">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-500 font-bold text-xl mb-4 md:mx-auto">3</div>
+                        <h3 class="font-bold text-lg mb-2">Handmade for You</h3>
+                        <p class="text-sm text-gray-500">I'll confirm the details and start stitching your unique piece!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meet the Creator -->
+        <section class="py-12 md:py-20 bg-white relative overflow-hidden reveal">
+            <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
+                <div class="w-full md:w-1/2 px-4 md:px-0">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-pastel-pink rounded-full transform rotate-6 scale-105 transition duration-500 group-hover:rotate-12"></div>
+                        <div class="absolute inset-0 bg-pastel-blue rounded-full transform -rotate-3 scale-105 transition duration-500 group-hover:-rotate-6"></div>
+                        <img src="photos/berzish.png" 
+                             alt="Creator crocheting" 
+                             class="relative rounded-full border-4 border-white shadow-xl w-full max-w-md mx-auto aspect-square object-cover transition transform group-hover:scale-105 duration-500">
+                    </div>
+                </div>
+                
+                <div class="w-full md:w-1/2 text-center md:text-left">
+                    <span class="text-pink-400 font-bold tracking-wider uppercase text-xs md:text-sm">Behind the Scenes</span>
+                    <h2 class="font-hand text-3xl md:text-5xl text-gray-700 mt-2 mb-4 md:mb-6">Hi, I'm Berzish!</h2>
+                    <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
+                        Welcome to my cozy corner of the internet! 🧶 <br><br>
+                        The Yarn Hug started from a small basket of yarn and a big dream to share comfort through handmade creations. Every plushie and cardigan here is stitched by my own two hands with patience, love, and a lot of coffee.
+                    </p>
+                    <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-6 md:mb-8">
+                        I believe that handmade gifts carry a special kind of magic, creating a warm "hug" that lasts forever. I can't wait to make something special just for you!
+                    </p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
+                        <div class="flex items-center gap-2 text-gray-600 bg-pastel-cream px-4 py-2 rounded-full hover:bg-pink-100 transition text-sm md:text-base">
+                            <i class="fa-solid fa-location-dot text-pink-400"></i>
+                            <span>Based in Srinagar</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600 bg-pastel-cream px-4 py-2 rounded-full hover:bg-blue-100 transition text-sm md:text-base">
+                            <i class="fa-solid fa-clock text-blue-400"></i>
+                            <span>Est. June 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-100 py-6 md:py-8">
+            <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <h3 class="font-hand text-xl md:text-2xl text-pink-500">The Yarn Hug</h3>
+                    <p class="text-xs md:text-sm text-gray-400">© 2024 The Yarn Hug. All rights reserved.</p>
+                </div>
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/theyarnhug" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-pink-100 hover:text-pink-500 transition transform hover:rotate-12">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- PRODUCT DETAIL VIEW (Hidden by default) -->
+    <div id="product-view" class="fixed inset-0 bg-white z-[60] overflow-y-auto hidden-view flex flex-col">
+        <!-- Product Navigation -->
+        <div class="sticky top-0 bg-white/95 backdrop-blur z-10 px-4 py-3 border-b border-gray-100 flex items-center gap-3 md:gap-4 shadow-sm">
+            <button onclick="hideProductView()" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-500 flex items-center justify-center transition active:scale-90">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <span class="font-hand text-lg md:text-xl text-gray-700">Back to Shop</span>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 py-6 md:py-8 w-full flex-grow">
+            <div class="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-12">
+                
+                <!-- Left: Image Carousel -->
+                <div class="md:w-1/2 flex flex-col gap-4">
+                    <div class="relative aspect-square rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm group">
+                        <img id="pd-main-img" src="" alt="Main Product" class="w-full h-full object-cover transition duration-500">
+                        <div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+                        <span id="pd-tag" class="hidden absolute top-4 left-4 bg-white/90 backdrop-blur text-pink-500 text-xs font-bold px-3 py-1 rounded-full shadow-sm"></span>
+                    </div>
+                    <!-- Thumbnails -->
+                    <div id="pd-thumbnails" class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+                        <!-- Thumbnails injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Right: Product Info -->
+                <div class="md:w-1/2 flex flex-col">
+                    <div class="mb-2">
+                        <span id="pd-category" class="text-xs md:text-sm font-bold text-pink-400 uppercase tracking-wider"></span>
+                    </div>
+                    <h1 id="pd-title" class="font-hand text-3xl md:text-5xl text-gray-800 mb-2 leading-tight"></h1>
+                    <div id="pd-price" class="text-xl md:text-2xl font-bold text-green-600 mb-4 md:mb-6 font-hand"></div>
+
+                    <p id="pd-description" class="text-gray-600 leading-relaxed text-base md:text-lg mb-6 md:mb-8"></p>
+
+                    <!-- Info Grid -->
+                    <div class="bg-pastel-cream rounded-2xl p-5 md:p-6 mb-8 grid grid-cols-2 gap-y-6 gap-x-4">
+                        <div>
+                            <span class="block text-xs font-bold text-gray-400 uppercase mb-1">Material</span>
+                            <span id="pd-material" class="text-gray-700 font-medium text-sm md:text-base"></span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-gray-400 uppercase mb-1">Dimensions</span>
+                            <span id="pd-size" class="text-gray-700 font-medium text-sm md:text-base"></span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="block text-xs font-bold text-gray-400 uppercase mb-1">Care Instructions</span>
+                            <span id="pd-care" class="text-gray-700 font-medium text-sm md:text-base"></span>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <a id="pd-action-btn" href="#" target="_blank" onclick="triggerConfetti()" 
+                       class="mt-auto w-full bg-pastel-pink hover:bg-pink-300 text-gray-700 font-bold text-lg py-4 rounded-2xl shadow-md hover:shadow-lg transition transform active:scale-95 flex items-center justify-center gap-3 border border-pink-200">
+                        <i class="fa-brands fa-instagram text-2xl text-pink-600"></i>
+                        <span>Order on Instagram</span>
+                    </a>
+                    <p class="text-center text-xs text-gray-400 mt-3 pb-8 md:pb-0">Clicking this will open a DM with the product name!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project JS extracted to external file -->
+    <script src="scripts/script.js" defer></script>
+</body>
+</html>

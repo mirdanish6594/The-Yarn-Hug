@@ -1,0 +1,51 @@
+/* Extracted styles from index.html */
+body {
+    background-color: #FEFBF5;
+    color: #5D5656;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+.blob-shape {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Custom styles for product details transition */
+#product-view {
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+.hidden-view {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Mobile Menu Animation */
+#mobile-menu {
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+#mobile-menu.open {
+    max-height: 300px;
+    opacity: 1;
+}

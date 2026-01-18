@@ -1,0 +1,13 @@
+{
+  "name": "yarn-hug",
+  "version": "1.0.0",
+  "description": "Static site for The Yarn Hug — handmade crochet shop",
+  "scripts": {
+    "start": "live-server --port=8000 --open=./index.html",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "license": "MIT"
+}
